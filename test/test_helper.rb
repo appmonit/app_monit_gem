@@ -1,4 +1,6 @@
-require 'app_monit_client'
-require 'minitest/unit'
+require 'appmonit_client'
 require 'minitest/autorun'
+require 'minitest/unit'
 require 'minitest/pride'
+
+require 'webmock/minitest'
