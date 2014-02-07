@@ -1,4 +1,4 @@
-require_relative '../test_helper'
+require_relative '../spec_helper'
 
 describe AppmonitClient::Event do
 
@@ -26,28 +26,28 @@ describe AppmonitClient::Event do
 
     it 'sets the HTTP header to application/json' do
       stub_request(:post, /.*/)
-      subject.create({ :test => 'XYZ' })
+      subject.create({ :spec => 'XYZ' })
       assert_requested :post, /.*/, :headers => { 'Content-Type' => 'application/json' }
     end
 
     it 'sets the HTTP header Appmonit-Env to the configured environment' do
       stub_request(:post, /.*/)
       AppmonitClient::Config.env = 'staging'
-      subject.create({ :test => 'XYZ' })
+      subject.create({ :spec => 'XYZ' })
       assert_requested :post, /.*/, :headers => { 'Appmonit-Env' => 'staging' }
     end
 
     it 'sets the HTTP header Appmonit-Env by default to \'development\' environment' do
       stub_request(:post, /.*/)
       AppmonitClient::Config.env = nil # make sure it's unset so it defaults to normal
-      subject.create({ :test => 'XYZ' })
+      subject.create({ :spec => 'XYZ' })
       assert_requested :post, /.*/, :headers => { 'Appmonit-Env' => 'development' }
     end
 
     it 'sets the HTTP header Appmonit-Api-Key to the configured API Key' do
       stub_request(:post, /.*/)
       AppmonitClient::Config.api_key = "FUBAR123"
-      subject.create({ :test => 'XYZ' })
+      subject.create({ :spec => 'XYZ' })
       assert_requested :post, /.*/, :headers => { 'Appmonit-Api-Key' => 'FUBAR123' }
     end
 
