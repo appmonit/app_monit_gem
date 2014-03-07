@@ -12,7 +12,7 @@ module AppmonitClient
       end
 
       def end_point
-        @end_point || "api.appmon.it"
+        @end_point || "http://api.appmon.it"
       end
     end
   end

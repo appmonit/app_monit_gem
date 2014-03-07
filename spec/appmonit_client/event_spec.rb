@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 describe AppmonitClient::Event do
 
@@ -13,13 +13,13 @@ describe AppmonitClient::Event do
   describe '#create' do
     before do
       AppmonitClient::Config.api_key   = 'MYAPIKEY'
-      AppmonitClient::Config.end_point = 'api.appmon.it'
+      AppmonitClient::Config.end_point = 'http://api.appmon.it'
       AppmonitClient::Config.env = nil
     end
 
     it 'POSTs to the configured end_point' do
       stub_request(:post, /xyz.appmon.it*/)
-      AppmonitClient::Config.end_point = 'xyz.appmon.it'
+      AppmonitClient::Config.end_point = 'http://xyz.appmon.it'
       subject.create({})
       assert_requested :post, /^\Axyz.appmon.it/
     end
