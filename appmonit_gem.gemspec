@@ -23,5 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest", ">= 5.2.2"
   spec.add_development_dependency "minitest-reporters"
   spec.add_development_dependency "webmock", ">= 1.17.1"
-  spec.add_development_dependency "guard-minitest"
+  spec.add_development_dependency "guard-minitest" if RUBY_PLATFORM =~ /darwin/
 end
