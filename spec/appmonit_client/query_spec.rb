@@ -12,12 +12,14 @@ describe AppmonitClient::Query do
   %w(count count_unique minimum maximum average sum funnel).each do |method_name|
     describe method_name do
       it 'gets the results with the given params' do
-        stub_request(:get, /api.appmon.it\/v1\/queries\/#{method_name}/)
+        stub_request(:get, /api.appmon.it\/v1\/queries\/#{method_name}/).to_return(body: {result: '0'}.to_json)
 
-        subject.send(method_name, 'collection_name', { valid: 'params' })
+        params = { valid: 'params' }
+        subject.send(method_name, 'collection_name', params)
 
-        assert_requested(:get, /api.appmon.it*/,
-                         body: {valid: 'params', event_collection: 'collection_name' }.to_json)
+        params[:event_collection] = 'collection_name'
+
+        assert_requested(:get, /api.appmon.it\/v1\/queries\/#{method_name}\?query=#{params.to_json}/)
       end
     end
   end

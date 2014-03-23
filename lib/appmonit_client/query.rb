@@ -8,11 +8,19 @@ module AppmonitClient
       end
 
       def query(method_name, collection_name, params)
+        require 'cgi'
         path = "/v1/queries/#{method_name}"
 
         params[:event_collection] = collection_name
 
-        Http.get(path, params)
+        response = Http.get("#{path}?query=#{CGI.escape(params.to_json)}")
+
+        case response.code.to_i
+          when 200
+            JSON.parse(response.body)
+          else
+            nil
+        end
       end
     end
   end
