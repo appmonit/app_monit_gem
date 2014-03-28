@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe AppmonitClient::Query do
-  subject { AppmonitClient::Query }
+describe AppMonit::Query do
+  subject { AppMonit::Query }
 
   before do
-    AppmonitClient::Config.api_key   = 'MYAPIKEY'
-    AppmonitClient::Config.end_point = 'http://api.appmon.it'
-    AppmonitClient::Config.env       = nil
+    AppMonit::Config.api_key   = 'MYAPIKEY'
+    AppMonit::Config.end_point = 'http://api.appmon.it'
+    AppMonit::Config.env       = nil
   end
 
   %w(count count_unique minimum maximum average sum funnel).each do |method_name|

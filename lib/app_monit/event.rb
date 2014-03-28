@@ -1,6 +1,6 @@
 require 'json'
 
-module AppmonitClient
+module AppMonit
   class Event
     def self.create(name, data_hash = {})
       created_at = data_hash.delete(:created_at) || Time.now.utc

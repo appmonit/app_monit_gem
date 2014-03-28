@@ -1,3 +1,3 @@
-module AppmonitClient
+module AppMonit
   VERSION = "0.0.1"
 end

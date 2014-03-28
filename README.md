@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/appmonit/appmonit_client.png?branch=master)](https://travis-ci.org/appmonit/appmonit_client)
 
-# AppmonitClient
+# AppMonit
 
 TODO: Write a gem description
 
@@ -8,7 +8,7 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'appmonit_client'
+    gem 'app_monit'
 
 And then execute:
 
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install appmonit_client
+    $ gem install app_monit
 
 ## Usage
 
