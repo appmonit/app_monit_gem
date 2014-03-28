@@ -1,4 +1,4 @@
-module AppmonitClient
+module AppMonit
   class Http
     def self.post(path, data_hash)
       request :post, path, data_hash
@@ -9,7 +9,7 @@ module AppmonitClient
     end
 
     def self.request(method, path, body = nil)
-      uri  = URI.parse(AppmonitClient::Config.end_point)
+      uri  = URI.parse(AppMonit::Config.end_point)
       http = Net::HTTP.new(uri.host, uri.port)
       #http.set_debug_output $stdout
       if method == :get
@@ -21,8 +21,8 @@ module AppmonitClient
       end
 
       # set headers so event data ends up in the correct bucket on the other side
-      request.add_field('Appmonit-Api-Key', AppmonitClient::Config.api_key)
-      request.add_field('Appmonit-Env', AppmonitClient::Config.env)
+      request.add_field('Appmonit-Api-Key', AppMonit::Config.api_key)
+      request.add_field('Appmonit-Env', AppMonit::Config.env)
 
       http.request(request)
     end

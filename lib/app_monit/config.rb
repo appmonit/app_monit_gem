@@ -1,4 +1,4 @@
-module AppmonitClient
+module AppMonit
   class Config
     class << self
       attr_writer :api_key, :env, :end_point

@@ -1,11 +1,12 @@
 require 'json'
 
-module AppmonitClient
+module AppMonit
   class Event
     def self.create(name, data_hash = {})
       created_at = data_hash.delete(:created_at) || Time.now.utc
+      uuid  = SecureRandom.uuid
 
-      message = { created_at: created_at, name: name, payload: data_hash }
+      message  = { created_at: created_at, name: name, payload: data_hash }
       response = Http.post('/v1/events', message)
 
       case response.code.to_i
