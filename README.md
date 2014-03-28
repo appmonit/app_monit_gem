@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/appmonit/app_monit.png?branch=master)](https://travis-ci.org/appmonit/app_monit)
+[![Build Status](https://travis-ci.org/appmonit/app_monit.png?branch=master)](https://travis-ci.org/appmonit/appmonit_client)
 
 # AppMonit
 
