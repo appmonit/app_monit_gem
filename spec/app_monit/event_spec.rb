@@ -46,13 +46,13 @@ describe AppMonit::Event do
       end
     end
 
-    it 'sets the created at time from the given paylaod' do
+    it 'sets calls post on http with the correct params' do
       time = Time.now
       @mock = MiniTest::Mock.new
-      @mock.expect(:post, true, ['/v1/events', { created_at: time.utc, name: 'test', payload: {} }])
+      @mock.expect(:post, true, ['/v1/events', { created_at: time.utc, name: 'test', payload: {test: 'test'} }])
 
       subject.stub(:client, @mock) do
-        subject.create!('test', {created_at: time})
+        subject.create!('test', {created_at: time, test: 'test'})
         @mock.verify
       end
     end
