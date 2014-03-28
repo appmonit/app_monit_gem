@@ -4,13 +4,57 @@ describe AppMonit::Event do
 
   subject { AppMonit::Event }
 
+  before :each do
+    AppMonit::Config.api_key   = 'MYAPIKEY'
+    AppMonit::Config.end_point = 'http://api.appmon.it'
+    AppMonit::Config.env       = nil
+
+    stub_request(:post, /.*/)
+  end
+
   it 'must raise an exception if API key is unset' do
+    AppMonit::Config.api_key = nil
     assert_raises AppMonit::ApiKeyNotSetError do
       subject.create({})
     end
   end
 
   describe '#create' do
+    it 'returns a response if successful' do
+      subject.stub(:create!, 'response') do
+        assert_equal 'response', subject.create
+      end
+    end
 
+    it 'returns false if an Http::Error is raised' do
+      subject.stub(:create!, -> { raise AppMonit::Http::Error }) do
+        assert_equal false, subject.create
+      end
+    end
+  end
+
+  describe '#create!' do
+    it 'sets a created at if not given' do
+      @mock = MiniTest::Mock.new
+      @mock.expect(:post, true, ['/v1/events', { created_at: Time.at(0).utc, name: 'test', payload: {} }])
+
+      Time.stub(:now, Time.at(0)) do
+        subject.stub(:client, @mock) do
+          subject.create!('test', {})
+          @mock.verify
+        end
+      end
+    end
+
+    it 'sets the created at time from the given paylaod' do
+      time = Time.now
+      @mock = MiniTest::Mock.new
+      @mock.expect(:post, true, ['/v1/events', { created_at: time.utc, name: 'test', payload: {} }])
+
+      subject.stub(:client, @mock) do
+        subject.create!('test', {created_at: time})
+        @mock.verify
+      end
+    end
   end
 end
