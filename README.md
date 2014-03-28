@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/appmonit/app_monit.png?branch=master)](https://travis-ci.org/appmonit/app_monit)
 
-# AppmonitClient
+# AppMonit
 
 TODO: Write a gem description
 
