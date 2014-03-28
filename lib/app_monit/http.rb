@@ -4,6 +4,15 @@ module AppMonit
 
     SUCCESS_CODES = %w(200 201).freeze
 
+    attr_accessor :client
+
+    def initialize
+      uri     = URI.parse(AppMonit::Config.end_point)
+      @client = Net::HTTP.new(uri.host, uri.port)
+
+      @client.read_timeout = 1
+    end
+
     def self.post(path, data_hash)
       request :post, path, data_hash
     end
@@ -12,10 +21,11 @@ module AppMonit
       request :get, path
     end
 
-    def self.request(method, path, body = nil)
-      uri  = URI.parse(AppMonit::Config.end_point)
-      http = Net::HTTP.new(uri.host, uri.port)
+    def self.request(*args)
+      new.request(*args)
+    end
 
+    def request(method, path, body = nil)
       if method == :get
         request = Net::HTTP::Get.new(path)
       else
@@ -27,19 +37,11 @@ module AppMonit
       # set headers so event data ends up in the correct bucket on the other side
       request.add_field('Appmonit-Api-Key', AppMonit::Config.api_key)
       request.add_field('Appmonit-Env', AppMonit::Config.env)
-      response = http.request(request)
+      response = client.request(request)
 
       raise Error.new unless SUCCESS_CODES.include?(response.code)
 
       response
-    end
-
-    private
-
-    def self.create_query_string(hash)
-      hash.collect do |key, value|
-        value.to_query("event[#{key}]")
-      end.sort! * '&'
     end
   end
 end
