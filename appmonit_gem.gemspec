@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'appmonit_client/version'
+require 'app_monit/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "appmonit_client"
-  spec.version       = AppmonitClient::VERSION
+  spec.name          = "app_monit"
+  spec.version       = AppMonit::VERSION
   spec.authors       = ["Redmar Kerkhoff", "Benoist Claassen"]
   spec.email         = ["redmar@appmon.it", "benoist@appmon.it"]
   spec.summary       = %q{Client gem for pushing events from ruby to the appmon.it service}

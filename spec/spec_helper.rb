@@ -1,4 +1,4 @@
-require 'appmonit_client'
+require 'app_monit'
 require 'minitest/autorun'
 require 'minitest/unit'
 #require 'minitest/pride'

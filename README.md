@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/appmonit/appmonit_client.png?branch=master)](https://travis-ci.org/appmonit/appmonit_client)
+[![Build Status](https://travis-ci.org/appmonit/app_monit.png?branch=master)](https://travis-ci.org/appmonit/app_monit)
 
 # AppmonitClient
 
@@ -8,7 +8,7 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'appmonit_client'
+    gem 'app_monit'
 
 And then execute:
 
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install appmonit_client
+    $ gem install app_monit
 
 ## Usage
 
@@ -24,7 +24,7 @@ TODO: Write usage instructions here
 
 ## Contributing
 
-1. Fork it ( http://github.com/[my-github-username]/appmonit_client/fork )
+1. Fork it ( http://github.com/[my-github-username]/app_monit/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

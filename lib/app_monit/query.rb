@@ -1,4 +1,4 @@
-module AppmonitClient
+module AppMonit
   class Query
     class << self
       %w(count count_unique minimum maximum average sum funnel).each do |method_name|
