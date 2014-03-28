@@ -12,7 +12,11 @@ module AppMonit
       created_at = data_hash.delete(:created_at) || Time.now.utc
 
       message  = { created_at: created_at, name: name, payload: data_hash }
-      Http.post('/v1/events', message)
+      client.post('/v1/events', message)
+    end
+
+    def self.client
+      Http
     end
   end
 end
