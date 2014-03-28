@@ -1,5 +1,9 @@
 module AppMonit
   class Http
+    Error = Class.new(StandardError)
+
+    SUCCESS_CODES = %w(200 201).freeze
+
     def self.post(path, data_hash)
       request :post, path, data_hash
     end
@@ -11,7 +15,7 @@ module AppMonit
     def self.request(method, path, body = nil)
       uri  = URI.parse(AppMonit::Config.end_point)
       http = Net::HTTP.new(uri.host, uri.port)
-      #http.set_debug_output $stdout
+
       if method == :get
         request = Net::HTTP::Get.new(path)
       else
@@ -23,8 +27,11 @@ module AppMonit
       # set headers so event data ends up in the correct bucket on the other side
       request.add_field('Appmonit-Api-Key', AppMonit::Config.api_key)
       request.add_field('Appmonit-Env', AppMonit::Config.env)
+      response = http.request(request)
 
-      http.request(request)
+      raise Error.new unless SUCCESS_CODES.include?(response.code)
+
+      response
     end
 
     private
