@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/appmonit/appmonit_client.png?branch=master)](https://travis-ci.org/appmonit/appmonit_client)
+[![Build Status](https://travis-ci.org/appmonit/app_monit_gem.png?branch=master)](https://travis-ci.org/appmonit/app_monit_gem)
 
 # AppMonit
 
