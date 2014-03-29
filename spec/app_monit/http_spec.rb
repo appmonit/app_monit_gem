@@ -6,7 +6,7 @@ describe AppMonit::Http do
   before do
     AppMonit::Config.api_key   = 'MYAPIKEY'
     AppMonit::Config.end_point = 'http://api.appmon.it'
-    AppMonit::Config.env = nil
+    AppMonit::Config.env       = nil
 
     stub_request(:post, /.*/)
   end
@@ -42,5 +42,17 @@ describe AppMonit::Http do
 
   it 'sets the read timeout to 1 second' do
     assert_equal 1, subject.client.read_timeout
+  end
+
+  describe 'when using ssl' do
+    before(:each) { AppMonit::Config.end_point = 'https://xyz.appmon.it' }
+
+    it 'sets the use_ssl flag to true' do
+      assert_equal true, subject.client.use_ssl?
+    end
+
+    it 'sets the verify mode to PEER' do
+      assert_equal OpenSSL::SSL::VERIFY_PEER, subject.client.verify_mode
+    end
   end
 end

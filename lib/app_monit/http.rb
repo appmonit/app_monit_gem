@@ -9,6 +9,10 @@ module AppMonit
     def initialize
       uri     = URI.parse(AppMonit::Config.end_point)
       @client = Net::HTTP.new(uri.host, uri.port)
+      if uri.scheme == 'https'
+        @client.use_ssl = true
+        @client.verify_mode  = OpenSSL::SSL::VERIFY_PEER
+      end
 
       @client.read_timeout = 1
     end
@@ -39,7 +43,7 @@ module AppMonit
       request.add_field('Appmonit-Env', AppMonit::Config.env)
       response = client.request(request)
 
-      raise Error.new unless SUCCESS_CODES.include?(response.code)
+      raise Error.new("Invalid response code: #{response.code} body: #{response.body}") unless SUCCESS_CODES.include?(response.code)
 
       response
     end
