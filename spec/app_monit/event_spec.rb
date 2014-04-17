@@ -31,6 +31,26 @@ describe AppMonit::Event do
         assert_equal false, subject.create
       end
     end
+
+    describe 'when the AppMonit::Config.fail_silent is set' do
+      it 'returns false if any Http related error is raised' do
+        AppMonit::Config.fail_silent = true
+
+        subject.stub(:create!, -> { raise Timeout::Error }) do
+          assert_equal false, subject.create
+        end
+      end
+    end
+
+    describe 'when the AppMonit::Config.fail_silent is NOT set' do
+      it 'raises the rescued Http related error again' do
+        AppMonit::Config.fail_silent = false
+
+        subject.stub(:create!, -> { raise Timeout::Error }) do
+          assert_raises(Timeout::Error) { subject.create }
+        end
+      end
+    end
   end
 
   describe '#create!' do
