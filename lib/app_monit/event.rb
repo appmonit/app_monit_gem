@@ -6,6 +6,10 @@ module AppMonit
       create!(*args)
     rescue Http::Error
       false
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse,
+           Net::HTTPHeaderSyntaxError, Net::ProtocolError => error
+    raise error unless AppMonit::Config.fail_silent
+      false
     end
 
     def self.create!(name, data_hash = {})
