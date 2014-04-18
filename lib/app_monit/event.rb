@@ -7,15 +7,15 @@ module AppMonit
     rescue Http::Error
       false
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse,
-           Net::HTTPHeaderSyntaxError, Net::ProtocolError => error
-    raise error unless AppMonit::Config.fail_silent
+        Net::HTTPHeaderSyntaxError, Net::ProtocolError => error
+      raise error unless AppMonit::Config.fail_silent
       false
     end
 
     def self.create!(name, data_hash = {})
       created_at = data_hash.delete(:created_at) || Time.now.utc
 
-      message  = { created_at: created_at, name: name, payload: data_hash }
+      message = { created_at: created_at, name: name, payload: data_hash }
       client.post('/v1/events', message)
     end
 
