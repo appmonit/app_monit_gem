@@ -1,7 +1,7 @@
 module AppMonit
   class Config
     class << self
-      attr_writer :api_key, :env, :end_point, :fail_silent
+      attr_writer :api_key, :env, :end_point, :fail_silent, :enabled
 
       def api_key
         @api_key || raise(ApiKeyNotSetError.new("Please set your API key"))
@@ -17,6 +17,10 @@ module AppMonit
 
       def fail_silent
         @fail_silent || false
+      end
+
+      def enabled?
+        @enabled.nil? ? env != "test" : @enabled
       end
     end
   end

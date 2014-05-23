@@ -13,6 +13,7 @@ module AppMonit
     end
 
     def self.create!(name, data_hash = {})
+      return false unless AppMonit::Config.enabled?
       created_at = data_hash.delete(:created_at) || Time.now.utc
 
       message = { created_at: created_at, name: name, payload: data_hash }

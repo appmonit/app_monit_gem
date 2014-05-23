@@ -8,6 +8,7 @@ describe AppMonit::Event do
     AppMonit::Config.api_key   = 'MYAPIKEY'
     AppMonit::Config.end_point = 'http://api.appmon.it'
     AppMonit::Config.env       = nil
+    AppMonit::Config.enabled   = true
 
     stub_request(:post, /.*/)
   end
@@ -54,6 +55,20 @@ describe AppMonit::Event do
   end
 
   describe '#create!' do
+    it 'only makes request if enabled' do
+      AppMonit::Config.enabled = false
+
+      @mock = MiniTest::Mock.new
+      @mock.expect(:post, true, ['', {}])
+
+      subject.stub(:client, @mock) do
+        subject.create!('test', {})
+        assert_raises(MockExpectationError, "post should not be called") do
+          @mock.verify
+        end
+      end
+    end
+
     it 'sets a created at if not given' do
       @mock = MiniTest::Mock.new
       @mock.expect(:post, true, ['/v1/events', { created_at: Time.at(0).utc, name: 'test', payload: {} }])
@@ -67,12 +82,12 @@ describe AppMonit::Event do
     end
 
     it 'sets calls post on http with the correct params' do
-      time = Time.now
+      time  = Time.now
       @mock = MiniTest::Mock.new
-      @mock.expect(:post, true, ['/v1/events', { created_at: time.utc, name: 'test', payload: {test: 'test'} }])
+      @mock.expect(:post, true, ['/v1/events', { created_at: time.utc, name: 'test', payload: { test: 'test' } }])
 
       subject.stub(:client, @mock) do
-        subject.create!('test', {created_at: time, test: 'test'})
+        subject.create!('test', { created_at: time, test: 'test' })
         @mock.verify
       end
     end
