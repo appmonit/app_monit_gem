@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["redmar@appmon.it", "benoist@appmon.it"]
   spec.summary       = %q{Client gem for pushing events from ruby to the appmon.it service}
   spec.description   = %q{Client gem for pushing events from ruby to the appmon.it service}
-  spec.homepage      = "http://appmon.it"
+  spec.homepage      = "https://appmon.it"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

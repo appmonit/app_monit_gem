@@ -1,7 +1,7 @@
 module AppMonit
   class Query
     class << self
-      %w(count count_unique minimum maximum average sum funnel).each do |method_name|
+      %w(count count_unique list_unique minimum maximum average sum funnel).each do |method_name|
         define_method method_name do |collection_name, params|
           query(method_name, collection_name, params)
         end

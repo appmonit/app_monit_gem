@@ -12,7 +12,7 @@ module AppMonit
       end
 
       def end_point
-        @end_point || "http://api.appmon.it"
+        @end_point || "https://api.appmon.it"
       end
 
       def fail_silent
