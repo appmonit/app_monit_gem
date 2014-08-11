@@ -6,7 +6,9 @@
 
 Add this line to your application's Gemfile:
 
-    gem 'app_monit'
+```ruby
+gem 'app_monit'
+```
 
 And then execute:
 
@@ -38,7 +40,7 @@ AppMonit::Event.create(event_name, payload_hash)
 
 ### Query
 
-You can use the following metrics to query your data:
+You can use the following methods to query your data:
 
 * `#count`
 * `#count_unique`
@@ -102,7 +104,7 @@ AppMonit::Query.funnel(steps: [
   { event_collection: 'registered', actor_property: 'user.id'},
   { event_collection: 'purchase', actor_property: 'user.id'}
   ]) #=> { 'result' => { 'result' => [ 2, 1], 'steps' => [{ event_collection: 'registered', actor_property: 'user.id'},
-                                                          { event_collection: 'purchase', actor_property: 'user.id'}]
+     #                                                    { event_collection: 'purchase', actor_property: 'user.id'}]
 ```
 
 #### Timeframe
@@ -113,7 +115,7 @@ You can specify a timeframe when querying your data:
 AppMonit::Query.count('registered', timeframe: 'this_week')
 ```
 
-You can use the following options to specify the timeframe:
+Use the following options to specify the timeframe:
 
 * this_minute
 * this_hour
@@ -132,7 +134,7 @@ You can specify an interval when querying your data in combination with a timefr
 ```ruby
 AppMonit::Query.count('registered', timeframe: 'this_week', interval: 'daily')
 ```
-You can use the following options to specify the interval:
+Use the following options to specify the interval:
 
 * minutely
 * hourly
@@ -149,20 +151,18 @@ You can specify a group when querying your data:
 
 ```ruby
 AppMonit::Query.count('registered', group_by: 'alcoholic') #=> { 'result' => [{ 'alcoholic' => true,  result => 1 }
- { 'alcoholic' => false, result => 2 }]
-                                                                                 ```
+                                                           #                  { 'alcoholic' => false, result => 2 }]
+```
 
 #### Filter
 
 You can specify a filter when querying your data:
 
-AppMonit::Event.create(:purchase, user: { id: '1' }, product: { price_in_cents: 150, name: 'soda', alcoholic: false })
-
 ```ruby
 AppMonit::Query.count('registered', filters: [{ property_name: 'product.name', operator: 'eq', property_value: 'soda' }]) #=> { 'result' => 1 }
 ```
 
-You can use the following operators:
+Use the following operators:
 
 | Operator | Matcher
 | -------- | --------------------------- |
