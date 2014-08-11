@@ -22,11 +22,26 @@ Or install it yourself as:
 
 ### Configure the client
 
+#### Basic configuration
 
 ```ruby
 AppMonit::Config.api_key   = '<YOUR_API_KEY>'
 AppMonit::Config.end_point = 'https://api.appmon.it'
 AppMonit::Config.env       = Rails.env.to_s
+```
+
+#### Additional configuration
+
+To ignore connection related errors when creating events, set the `.fail_silent` option in the configuration (default: `false`):
+
+```ruby
+AppMonit::Config.fail_silent = true
+```
+
+To disable creating events, set the `.enabled` option in the configuration (default: `true`):
+
+```ruby
+AppMonit::Config.enabled = false
 ```
 
 ### Create an event
