@@ -50,7 +50,7 @@ You can use the following methods to query your data:
 * `#sum`
 * `#funnel`
 
-Example data:
+The examples are based on the following events:
 
 ```ruby
 AppMonit::Event.create(:registered, user: { id: '1' })
