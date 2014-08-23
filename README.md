@@ -6,7 +6,9 @@
 
 Add this line to your application's Gemfile:
 
-    gem 'app_monit'
+```ruby
+gem 'app_monit'
+```
 
 And then execute:
 
@@ -20,63 +22,115 @@ Or install it yourself as:
 
 ### Configure the client
 
-    AppMonit::Config.api_key   = '<YOUR_API_KEY>'
-    AppMonit::Config.end_point = 'https://api.appmon.it'
-    AppMonit::Config.env       = Rails.env.to_s
+#### Basic configuration
+
+```ruby
+AppMonit::Config.api_key   = '<YOUR_API_KEY>'
+AppMonit::Config.end_point = 'https://api.appmon.it'
+AppMonit::Config.env       = Rails.env.to_s
+```
+
+#### Additional configuration
+
+To ignore connection related errors when creating events, set the `.fail_silent` option in the configuration (default: `false`):
+
+```ruby
+AppMonit::Config.fail_silent = true
+```
+
+To disable creating events, set the `.enabled` option in the configuration (default: `true`):
+
+```ruby
+AppMonit::Config.enabled = false
+```
 
 ### Create an event
 
-    event_name   = 'authentication'
-    payload_hash = {user: {id: 1, name: 'John'} }
-    AppMonit::Event.create(event_name, payload_hash)
+```ruby
+event_name   = 'authentication'
+payload_hash = { user: { id: 1, name: 'John' } }
+
+AppMonit::Event.create(event_name, payload_hash)
+```
 
 ### Query
 
-You can use the following metrics to query your data
+You can use the following methods to query your data:
 
-* count
-* count_unique
-* minimum
-* maximum
-* average
-* sum
-* funnel
+* `#count`
+* `#count_unique`
+* `#minimum`
+* `#maximum`
+* `#average`
+* `#sum`
+* `#funnel`
 
-    AppMonit::Event.create(:registered, user: {id: '1'})
-    AppMonit::Event.create(:registered, user: {id: '2'})
-    AppMonit::Event.create(:purchase, user: {id: '1'}, product: { price_in_cents: 100, name: 'water', alcoholic: false })
-    AppMonit::Event.create(:purchase, user: {id: '1'}, product: { price_in_cents: 150, name: 'soda', alcoholic: false })
-    AppMonit::Event.create(:purchase, user: {id: '1'}, product: { price_in_cents: 200, name: 'beer', alcoholic: true })
+The examples are based on the following events:
 
-#### count
-    AppMonit::Query.count(:purchase) # { 'result' => 3 }
+```ruby
+AppMonit::Event.create(:registered, user: { id: '1' })
+AppMonit::Event.create(:registered, user: { id: '2' })
 
-#### count
-    AppMonit::Query.count_unique(:purchase) # { 'result' => 2, target_property: 'product.name' }
+AppMonit::Event.create(:purchase, user: { id: '1' }, product: { price_in_cents: 100, name: 'water', alcoholic: false })
+AppMonit::Event.create(:purchase, user: { id: '1' }, product: { price_in_cents: 150, name: 'soda', alcoholic: false })
+AppMonit::Event.create(:purchase, user: { id: '1' }, product: { price_in_cents: 200, name: 'beer', alcoholic: true })
+```
 
-#### minimum
-    AppMonit::Query.minimum(:purchase, target_property: 'product.price_in_cents') # { 'result' => 100 }
+#### `#count`
 
-#### minimum
-    AppMonit::Query.maximum(:purchase, target_property: 'product.price_in_cents') # { 'result' => 200 }
+```ruby
+AppMonit::Query.count(:purchase) #=> { 'result' => 3 }
+```
 
-#### average
-    AppMonit::Query.average(:purchase, target_property: 'product.price_in_cents') # { 'result' => 150 }
+#### `#count_unique`
 
-#### sum
-    AppMonit::Query.sum(:purchase, target_property: 'product.price_in_cents') # { 'result' => 450 }
+```ruby
+AppMonit::Query.count_unique(:purchase) #=> { 'result' => 2, target_property: 'product.name' }
+```
 
-#### funnel
-    AppMonit::Query.funnel(steps: [
-        { event_collection: 'registered', actor_property: 'user.id'},
-        { event_collection: 'purchase', actor_property: 'user.id'}
-    ] # { 'result' => { 'result' => [ 2, 1], 'steps' => [{ event_collection: 'registered', actor_property: 'user.id'},
-                                                         { event_collection: 'purchase', actor_property: 'user.id'}]
+#### `#minimum`
+
+```ruby
+AppMonit::Query.minimum(:purchase, target_property: 'product.price_in_cents') #=> { 'result' => 100 }
+```
+
+#### `#maximum`
+
+```ruby
+AppMonit::Query.maximum(:purchase, target_property: 'product.price_in_cents') #=> { 'result' => 200 }
+```
+
+#### `#average`
+
+```ruby
+AppMonit::Query.average(:purchase, target_property: 'product.price_in_cents') #=> { 'result' => 150 }
+```
+
+#### `#sum`
+
+```ruby
+AppMonit::Query.sum(:purchase, target_property: 'product.price_in_cents') #=> { 'result' => 450 }
+```
+
+#### `#funnel`
+
+```ruby
+AppMonit::Query.funnel(steps: [
+  { event_collection: 'registered', actor_property: 'user.id'},
+  { event_collection: 'purchase', actor_property: 'user.id'}
+  ]) #=> { 'result' => { 'result' => [ 2, 1], 'steps' => [{ event_collection: 'registered', actor_property: 'user.id'},
+     #                                                    { event_collection: 'purchase', actor_property: 'user.id'}]
+```
 
 #### Timeframe
-    AppMonit::Query.count('registered', timeframe: 'this_week')
 
-Options
+You can specify a timeframe when querying your data:
+
+```ruby
+AppMonit::Query.count('registered', timeframe: 'this_week')
+```
+
+Use the following options to specify the timeframe:
 
 * this_minute
 * this_hour
@@ -84,14 +138,18 @@ Options
 * this_week
 * this_month
 * this_year
+* this_n_minutes (example: with n = 2 results this_2_minutes)
 
-Or with n: this_n_minutes (n = 2 => this_2_minutes)
+In addition to using the word 'this' to specify the timeframe, you can also use the word 'previous' (example: previous_minute, previous_day and with n = 3 the previous_3_minutes).
 
-This can also be replaced with previous: previous_minute and previous_n_minutes
 
 #### Interval
-This can be used with timeframe
-    AppMonit::Query.count('registered', timeframe: 'this_week', interval: 'daily')
+You can specify an interval when querying your data in combination with a timeframe:
+
+```ruby
+AppMonit::Query.count('registered', timeframe: 'this_week', interval: 'daily')
+```
+Use the following options to specify the interval:
 
 * minutely
 * hourly
@@ -99,27 +157,40 @@ This can be used with timeframe
 * monthly
 * yearly
 * weekly
+* every_n_minutes (example: with n = 3 results every_3_minutes)
 
-Also with n: every_n_minutes (n = 2 => every_2_minutes)
 
 #### Group by
-    AppMonit::Query.count('registered', group_by: 'alcoholic') # { 'result' => [ {'alcoholic' => true,  result => 1 }
-                                                                                 {'alcoholic' => false, result => 2 }]
+
+You can specify a group when querying your data:
+
+```ruby
+AppMonit::Query.count('registered', group_by: 'alcoholic') #=> { 'result' => [{ 'alcoholic' => true,  result => 1 }
+                                                           #                  { 'alcoholic' => false, result => 2 }]
+```
 
 #### Filter
-    AppMonit::Query.count('registered', filters: [{property_name: 'product.name', operator: 'eq', property_value: 'soda'}])
 
-Allowed operators
+You can specify a filter when querying your data:
 
-* eq
-* neq
-* lt
-* lte
-* gt
-* gte
-* exists
-* in
-* nin
+```ruby
+AppMonit::Query.count('registered', filters: [{ property_name: 'product.name', operator: 'eq', property_value: 'soda' }]) #=> { 'result' => 1 }
+```
+
+Use the following operators:
+
+| Operator | Matcher
+| -------- | --------------------------- |
+| eq       | equal                       |
+| neq      | not equal                   |
+| lt       | less than                   |
+| lte      | less than or equal to       |
+| gt       | greater than                |
+| gte      | greater than or equal to    |
+| exists   | exists                      |
+| in       | in                          |
+| nin      | not in                      |
+
 
 ## Contributing
 
