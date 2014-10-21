@@ -40,8 +40,14 @@ describe AppMonit::Http do
     assert_requested :post, /.*/, :headers => { 'Appmonit-Api-Key' => 'FUBAR123' }
   end
 
-  it 'sets the read timeout to 1 second' do
-    assert_equal 1, subject.client.read_timeout
+  it 'sets the read timeout to AppMonit::Config.timeout' do
+    AppMonit::Config.timeout = 10
+    assert_equal 10, subject.client.read_timeout
+  end
+
+  it 'sets the read timeout to the default' do
+    AppMonit::Config.timeout = 0
+    assert_equal 60, subject.client.read_timeout
   end
 
   describe 'when using ssl' do

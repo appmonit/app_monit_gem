@@ -14,7 +14,7 @@ module AppMonit
         @client.verify_mode  = OpenSSL::SSL::VERIFY_PEER
       end
 
-      @client.read_timeout = 1
+      @client.read_timeout = AppMonit::Config.timeout if AppMonit::Config.timeout > 0
     end
 
     def self.post(path, data_hash)
