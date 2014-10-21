@@ -44,6 +44,14 @@ To disable creating events, set the `.enabled` option in the configuration (defa
 AppMonit::Config.enabled = false
 ```
 
+Default timeout for HTTP requests is 1 second to prevent stalling the application when sending events.
+To change this setting use the `.timeout` option (default: 1). When set to 0 it falls back to the default HTTP timeout of 60 seconds.
+
+```ruby
+AppMonit::Config.timeout = 10
+```
+
+
 ### Create an event
 
 ```ruby
