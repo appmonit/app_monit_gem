@@ -16,7 +16,13 @@ module AppMonit
       return false unless AppMonit::Config.enabled?
       created_at = data_hash.delete(:created_at) || Time.now.utc
 
-      message = { created_at: created_at, name: name, payload: data_hash }
+      message = { created_at: created_at, name: name }
+
+      message[:api_key]     = data_hash.delete(:api_key) if data_hash[:api_key]
+      message[:environment] = data_hash.delete(:environment) if data_hash[:environment]
+
+      message[:payload] = data_hash
+
       client.post('/v1/events', message)
     end
 
