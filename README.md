@@ -205,6 +205,7 @@ You can also specify the environment and API key through the parameters
 
 ```ruby
 AppMonit::Query.count('registered', ap_key: 'KEY', environment: 'ENV')
+AppMonit::Event.create('registered', ap_key: 'KEY', environment: 'ENV')
 ```
 
 ## Contributing
