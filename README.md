@@ -199,6 +199,11 @@ Use the following operators:
 | in       | in                          |
 | nin      | not in                      |
 
+### Extra query params
+
+You can also specify the environment and API key through the parameters
+
+AppMonit::Query.count('registered', ap_key: 'KEY', environment: 'ENV')
 
 ## Contributing
 
