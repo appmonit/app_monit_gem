@@ -13,7 +13,15 @@ module AppMonit
 
         params[:event_collection] = collection_name
 
-        response = Http.get("#{path}?query=#{CGI.escape(params.to_json)}")
+        query_string_parts = []
+
+        query_string_parts << "api_key=#{params.delete(:api_key)}" if params[:api_key]
+        query_string_parts << "environment=#{params.delete(:environment)}" if params[:environment]
+        query_string_parts << "query=#{CGI.escape(params.to_json)}"
+
+        query_string = query_string_parts.join('&')
+
+        response = Http.get("#{path}?#{query_string}")
 
         case response.code.to_i
           when 200
