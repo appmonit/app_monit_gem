@@ -9,7 +9,6 @@ module AppMonit
 
       def query(method_name, collection_name, params)
         require 'cgi'
-        path = "/v1/queries/#{method_name}"
 
         params[:event_collection] = collection_name
 
@@ -21,6 +20,9 @@ module AppMonit
 
         query_string = query_string_parts.join('&')
 
+
+        version  = params[:version] || Config.version
+        path     = "/#{version}/queries/#{method_name}"
         response = Http.get("#{path}?#{query_string}")
 
         case response.code.to_i
