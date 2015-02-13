@@ -7,7 +7,7 @@ module AppMonit
     rescue Http::Error
       false
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse,
-        Net::HTTPHeaderSyntaxError, Net::ProtocolError => error
+        Net::HTTPHeaderSyntaxError, Net::ProtocolError, Errno::ETIMEDOUT => error
       raise error unless AppMonit::Config.fail_silent
       false
     end
@@ -23,7 +23,15 @@ module AppMonit
 
       message[:payload] = data_hash
 
-      client.post('/v1/events', message)
+      post(message)
+    end
+
+    def self.post(message)
+      if AppMonit::Config.async?
+        AppMonit::Worker.instance.push(message)
+      else
+        client.post('/v1/events', message)
+      end
     end
 
     def self.client
