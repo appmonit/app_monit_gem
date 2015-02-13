@@ -1,7 +1,7 @@
 module AppMonit
   class Config
     class << self
-      attr_writer :api_key, :env, :end_point, :fail_silent, :enabled, :timeout, :version, :async, :log_level
+      attr_writer :api_key, :env, :end_point, :fail_silent, :enabled, :timeout, :version, :async, :log_level, :flush_rate
 
       def api_key
         @api_key || raise(ApiKeyNotSetError.new("Please set your API key"))
@@ -33,6 +33,10 @@ module AppMonit
 
       def async?
         @async
+      end
+
+      def flush_rate
+        @flush_rate || 60
       end
 
       def timeout

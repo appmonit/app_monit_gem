@@ -18,7 +18,7 @@ module AppMonit
     def initialize
       @queue      = Queue.new
       @multiplier = 1
-      @flush_rate = 60
+      @flush_rate = AppMonit::Config.flush_rate
       reset
     end
 
@@ -28,21 +28,24 @@ module AppMonit
     end
 
     def start
+      logger.debug('Start collecting')
       Thread.new do
+        AppMonit.logger.debug('Waiting for queue')
         while (event = @queue.pop)
           begin
             case event
-              when :event
+              when :flush
+                @allow_flush = true
+                send_to_collector
+              else
+                logger.debug 'Received event'
                 events << event
                 if @allow_flush && events.count > 10
                   send_to_collector
                 end
-              when :flush
-                @allow_flush = true
-                send_to_collector
             end
           rescue Exception => e
-            AppMonit.logger.debug ["Event error:", event.inspect, e.message]
+            logger.debug ['Event error:', event.inspect, e.message]
             @allow_flush = false
           end
         end
@@ -65,9 +68,13 @@ module AppMonit
       @queue << event
     end
 
+    def logger
+      AppMonit.logger
+    end
+
     def send_to_collector
-      AppMonit.logger.debug "Sending to collector"
       if @events.any?
+        logger.debug 'Sending to collector'
         AppMonit::Http.post('/v1/events', event: events)
       end
       reset

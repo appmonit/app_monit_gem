@@ -28,6 +28,7 @@ module AppMonit
 
     def self.post(message)
       if AppMonit::Config.async?
+        AppMonit.logger.debug("[Event] push: #{message}")
         AppMonit::Worker.instance.push(message)
       else
         client.post('/v1/events', message)

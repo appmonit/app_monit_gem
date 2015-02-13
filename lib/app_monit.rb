@@ -4,7 +4,9 @@ require "app_monit/config"
 require "app_monit/http"
 require "app_monit/event"
 require "app_monit/query"
+require "app_monit/worker"
 require "net/https"
+require "logger"
 
 module AppMonit
   MUTEX = Mutex.new
@@ -14,7 +16,7 @@ module AppMonit
       return @logger if @logger
       AppMonit::MUTEX.synchronize do
         return @logger if @logger
-        @logger = Logger.new(STDOUT)
+        @logger = ::Logger.new(STDOUT)
       end
     end
   end
