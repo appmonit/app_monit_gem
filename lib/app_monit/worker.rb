@@ -75,7 +75,11 @@ module AppMonit
     def send_to_collector
       if @events.any?
         logger.debug 'Sending to collector'
-        AppMonit::Http.post('/v1/events', event: events)
+        begin
+          AppMonit::Http.post('/v1/events', event: events)
+        rescue Net::ReadTimeout
+          logger.debug "Response took to longer than #{AppMonit::Config.timeout} second(s), but we assume it's been send"
+        end
       end
       reset
     end
