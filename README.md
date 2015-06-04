@@ -182,9 +182,9 @@ AppMonit::Query.count('registered', group_by: 'alcoholic') #=> { 'result' => [{ 
 You can specify a group to expand when querying your data:
 
 ```ruby
-AppMonit::Query.count('registered', expanded_group_by: 'tags') #=> { 'result' => [{ 'tags' => 'wet',  result => 3 }
-                                                           #                  { 'tags' => 'sparkling', result => 2 }]
-                                                           #                  { 'tags' => 'plain', result => 1 }]
+AppMonit::Query.count('registered', expanded_group_by: 'tags') #=> { 'result' => [{ 'tags' => 'wet',      result => 3 }
+                                                               #                  { 'tags' => 'sparkling', result => 2 }]
+                                                               #                  { 'tags' => 'plain',     result => 1 }]
 ```
 
 #### Filter
