@@ -73,15 +73,15 @@ You can use the following methods to query your data:
 * `#sum`
 * `#funnel`
 
-The examples are based on the following events:
+The examples are based on the following events
 
 ```ruby
 AppMonit::Event.create(:registered, user: { id: '1' })
 AppMonit::Event.create(:registered, user: { id: '2' })
 
-AppMonit::Event.create(:purchase, user: { id: '1' }, product: { price_in_cents: 100, name: 'water', alcoholic: false })
-AppMonit::Event.create(:purchase, user: { id: '1' }, product: { price_in_cents: 150, name: 'soda', alcoholic: false })
-AppMonit::Event.create(:purchase, user: { id: '1' }, product: { price_in_cents: 200, name: 'beer', alcoholic: true })
+AppMonit::Event.create(:purchase, user: { id: '1' }, product: { price_in_cents: 100, name: 'water', alcoholic: false, tags: ['plain', 'wet'] })
+AppMonit::Event.create(:purchase, user: { id: '1' }, product: { price_in_cents: 150, name: 'soda', alcoholic: false, tags: ['sparkling', 'wet'] })
+AppMonit::Event.create(:purchase, user: { id: '1' }, product: { price_in_cents: 200, name: 'beer', alcoholic: true, tags: ['sparkling', 'wet'] })
 ```
 
 #### `#count`
@@ -175,6 +175,16 @@ You can specify a group when querying your data:
 ```ruby
 AppMonit::Query.count('registered', group_by: 'alcoholic') #=> { 'result' => [{ 'alcoholic' => true,  result => 1 }
                                                            #                  { 'alcoholic' => false, result => 2 }]
+```
+
+#### Expanded group by
+
+You can specify a group to expand when querying your data:
+
+```ruby
+AppMonit::Query.count('registered', expanded_group_by: 'tags') #=> { 'result' => [{ 'tags' => 'wet',  result => 3 }
+                                                           #                  { 'tags' => 'sparkling', result => 2 }]
+                                                           #                  { 'tags' => 'plain', result => 1 }]
 ```
 
 #### Filter

@@ -7,7 +7,7 @@ module AppMonit
     rescue Http::Error
       false
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse,
-        Net::HTTPHeaderSyntaxError, Net::ProtocolError, Errno::ETIMEDOUT => error
+        Net::HTTPHeaderSyntaxError, Net::ProtocolError, Errno::ETIMEDOUT, Errno::ECONNREFUSED => error
       raise error unless AppMonit::Config.fail_silent
       false
     end
