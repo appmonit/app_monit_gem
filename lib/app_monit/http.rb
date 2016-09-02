@@ -41,15 +41,20 @@ module AppMonit
       # set headers so event data ends up in the correct bucket on the other side
       # only add Appmonit-Api-Key header if there was no api_key configured in the params
       request.add_field('Appmonit-Api-Key', AppMonit::Config.api_key) unless api_key(path)
-      request.add_field('Appmonit-Env', AppMonit::Config.env)
+      # only add Appmonit-Env header if there was no env configured in the params
+      request.add_field('Appmonit-Env', AppMonit::Config.env) unless environment(path)
       response = client.request(request)
 
-      raise Error.new("Invalid response code: #{response.code} body: #{response.body}") unless SUCCESS_CODES.include?(response.code)
+      raise Error.new("Invalid response code: #{response.code} body: #{respose.body}") unless SUCCESS_CODES.include?(response.code)
 
       response
     end
 
     private
+
+    def environment(path)
+      params(path).fetch('environment', nil)
+    end
 
     def api_key(path)
       params(path).fetch('api_key', nil)
